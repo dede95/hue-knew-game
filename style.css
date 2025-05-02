@@ -1,0 +1,14 @@
+#grid {
+    display: grid;
+}
+
+.grid-item {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+}
+
+.grid-item:hover {
+    border: 1px solid yellow;
+    cursor: pointer;
+}
