@@ -13,7 +13,7 @@ const makeBaseColor = () => {
     return [rVal, gVal, bVal, `rgb(${rVal}, ${gVal}, ${bVal})`]
 }
 
-const randomSelectSquare = (gridObj, colourArray) => {
+const randomSelectSquare = (gridObj) => {
     let childrenSquares = gridObj.children;
     let chosenSqaure = childrenSquares[Math.floor(Math.random() * childrenSquares.length)];
 
@@ -29,7 +29,6 @@ const generateGrid = (level) => {
     }
     grid.style.gridTemplateColumns = `repeat(${level + 1}, 100px [col-start])`;
 }
-// keys = Object.keys(gridnbyn);
 
 const adjustColour = (colour) => {
     let adjustedColour;
@@ -50,9 +49,12 @@ const adjustColour = (colour) => {
 
 }
 
+// EVENT LISTENERS
+
 startBtn.addEventListener('click', function () {
     this.style.display = 'none';
     generateGrid(currentLevel);
+    // Select divs after created
     let colourSqs = document.querySelectorAll('.grid-item');
 
     // generate colour array and grab chosen colour
