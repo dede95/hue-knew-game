@@ -7,6 +7,8 @@ let currentLevel = 1;
 let lives = 3;
 let gameOver = false;
 const gridnbyn = {};
+let randomSqaure;
+let colourSqs;
 
 const makeBaseColor = () => {
     let rVal = Math.floor(Math.random() * 255) + 1;
@@ -20,7 +22,7 @@ const generateGrid = (level) => {
     let sqaures = (level + 1) ** 2;
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
-        sqaure.classList.add('grid-item', 'sqaure');
+        sqaure.classList.add('grid-item', 'regular');
         grid.appendChild(sqaure);
     }
     grid.style.gridTemplateColumns = `repeat(${level + 1}, 100px [col-start])`;
@@ -30,7 +32,7 @@ const randomSelectSquare = (gridObj) => {
     let childrenSquares = gridObj.children;
     let chosenSqaure = childrenSquares[Math.floor(Math.random() * childrenSquares.length)];
 
-    chosenSqaure.classList.toggle('sqaure') //switch off square for the correct sqaure
+    chosenSqaure.classList.toggle('regular') //switch off square for the correct sqaure
     chosenSqaure.classList.add('correct');
     return chosenSqaure 
 }
@@ -58,38 +60,51 @@ const adjustColour = (colour) => {
 
 // }
 
+// LANDING PAGE VIEW - maybe put in start button event 
+// livesTitle.style.display = 'none'
+generateGrid(currentLevel);
+
+// Select divs after created
+colourSqs = document.querySelectorAll('.grid-item');
+
+// generate colour array and grab chosen colour
+let chosenColorArray = makeBaseColor();
+let chosenColor = chosenColorArray[chosenColorArray.length - 1];
+
+for(i = 0; i < colourSqs.length; i++){
+    colourSqs[i].style.backgroundColor = chosenColor;
+}
+
+randomSqaure = randomSelectSquare(grid); 
+randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
+
+livesTitle.style.display = 'inline-block'
+livesNumber.innerHTML = `${lives}`;
+
 // EVENT LISTENERS
-livesTitle.style.display = 'none'
 
-startBtn.addEventListener('click', function () {
-    this.style.display = 'none';
-    generateGrid(currentLevel);
-    // Select divs after created
-    let colourSqs = document.querySelectorAll('.grid-item');
+// grab squares with class .regular after they have been generated
+const wrongSqs = document.querySelectorAll('.regular');
+for(let wrong of wrongSqs) {
+    wrong.addEventListener('click', () => {
+        lives--;
+        livesNumber.innerHTML = `${lives}`;
+    })
+}
 
-    // generate colour array and grab chosen colour
-    let chosenColorArray = makeBaseColor();
-    let chosenColor = chosenColorArray[chosenColorArray.length - 1];
-
-    for(i = 0; i < colourSqs.length; i++){
-        colourSqs[i].style.backgroundColor = chosenColor;
-    }
-
-    let randomSqaure = randomSelectSquare(grid); 
-    randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
-
-    // randomSqaure.addEventListener('click', function(e){
-    //     e.stopPropagation();
-    //     console.log(this.style.backgroundColor);
-    // })
-
-    livesTitle.style.display = 'inline-block'
-    livesNumber.innerHTML = `${lives}`;
+// startBtn.addEventListener('click', function () {
+//     this.style.display = 'none';
+//     // randomSqaure.addEventListener('click', function(e){
+//     //     e.stopPropagation();
+//     //     console.log(this.style.backgroundColor);
+//     // })
     
+// });
 
-    
-});
+// checking if vars defined in startbtn event lsitener otherwise, make global!
+// MAKING randomSqaure AND colourSqs GLOBAL 
 
+console.log(colourSqs);
 
 
 
