@@ -6,16 +6,36 @@ const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
 const nextLvlBtn = document.querySelector('#nextLevel');
 
-let currentLevel = 4; // go to level 6x6 but have 20 levels 
+// const rawData = document.getElementById('gameData').textContent;
+
+let currentLevel = 1; // go to level 6x6 but have 20 levels 
 let lives = 3;
 let gameOver = false;
 let disableSquares = false;
 const gridnbyn = {};
 let randomSqaure;
 let colourSqs;
+let gameData = null;
 
+// load gameData
+async function loadGameData() {
+    try {
+        const response = await fetch('./data.json');
+        const data = await response.json();
 
+        gameData = data;
+        afterDataIsLoaded();
+    } catch (e) {
+        console.error('Failed to load JSON:', e);
+    }
+}
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadGameData();
+  });
+
+function afterDataIsLoaded () {
+};
 //
 
 const makeBaseColor = () => {
@@ -50,7 +70,7 @@ const adjustColour = (colour) => {
 
     // range -4 to 4 
     // let adjusters = [-10, -7, -5, 5, 7, 10];
-    let adjuster = 4; //adjusters[Math.floor(Math.random() * adjusters.length)]; 
+    let adjuster = gameData[currentLevel]["adjust"]; //adjusters[Math.floor(Math.random() * adjusters.length)]; 
 
     // grab only the rgb values from the original base colour
     let colour_vals = colour.slice(0,3);
@@ -92,8 +112,6 @@ function game() {
     livesNumber.innerHTML = `${lives}`;
 
     playSqaures(colourSqs);
-
-
     
     
 }
@@ -111,6 +129,7 @@ function playSqaures(gameSqs) {
                 document.querySelector('h2').innerHTML = 'Correct!';
                 randomSqaure.style.borderColor = 'yellow';
                 nextLvlBtn.style.display = 'block';
+                currentLevel++;
             } else {
                 lives--;
                 livesNumber.innerHTML = `${lives}`;
@@ -140,7 +159,6 @@ function resetStartOver() {
 
 startBtn.addEventListener('click', function (){
     startBtn.style.display = 'none';
-
     livesTitle.style.display = 'inline-block';
     livesNumber.style.display = 'inline-block';
 
@@ -148,7 +166,7 @@ startBtn.addEventListener('click', function (){
 
     console.log(colourSqs);
 
-})
+});
 
 
 
