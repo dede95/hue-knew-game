@@ -1,14 +1,22 @@
 const grid = document.querySelector('#grid');
-const startBtn = document.querySelector('#startGame');
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
+
+const startBtn = document.querySelector('#startGame');
+const resetBtn = document.querySelector('#resetGame');
+const nextLvlBtn = document.querySelector('#nextLevel');
 
 let currentLevel = 4; // go to level 6x6 but have 20 levels 
 let lives = 3;
 let gameOver = false;
+let disableSquares = false;
 const gridnbyn = {};
 let randomSqaure;
 let colourSqs;
+
+
+
+//
 
 const makeBaseColor = () => {
     let rVal = Math.floor(Math.random() * 255) + 1;
@@ -41,7 +49,7 @@ const adjustColour = (colour) => {
     let adjustedColour;
 
     // range -4 to 4 
-    let adjusters = [-10, -7, -5, 5, 7, 10];
+    // let adjusters = [-10, -7, -5, 5, 7, 10];
     let adjuster = 4; //adjusters[Math.floor(Math.random() * adjusters.length)]; 
 
     // grab only the rgb values from the original base colour
@@ -57,51 +65,90 @@ const adjustColour = (colour) => {
 }
 
 // LANDING PAGE VIEW - maybe put in start button event 
-// livesTitle.style.display = 'none'
-generateGrid(currentLevel);
 
-// Select divs after created
-colourSqs = document.querySelectorAll('.grid-item');
+livesTitle.style.display = 'none';
+livesNumber.style.display = 'none';
+resetBtn.style.display = 'none';
+nextLvlBtn.style.display = 'none';
+// grid.style.display = 'none';
 
-// generate colour array and grab chosen colour
-let chosenColorArray = makeBaseColor();
-let chosenColor = chosenColorArray[chosenColorArray.length - 1];
+function game() {
+    generateGrid(currentLevel); // change/reset level and lives in other functions (Reset and next)
 
-for(i = 0; i < colourSqs.length; i++){
-    colourSqs[i].style.backgroundColor = chosenColor;
+    // Select divs after created
+    colourSqs = document.querySelectorAll('.grid-item');
+
+    // generate colour array and grab chosen colour
+    let chosenColorArray = makeBaseColor();
+    let chosenColor = chosenColorArray[chosenColorArray.length - 1];
+
+    for(i = 0; i < colourSqs.length; i++){
+        colourSqs[i].style.backgroundColor = chosenColor;
+    }
+    
+    randomSqaure = randomSelectSquare(grid); 
+    randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
+
+    livesNumber.innerHTML = `${lives}`;
+
+    playSqaures(colourSqs);
+
+
+    
+    
 }
 
-randomSqaure = randomSelectSquare(grid); 
-randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
+function playSqaures(gameSqs) {
+    gameSqs.forEach(square => {
+        square.addEventListener('click', function (e) {
+            // return nothing if game over is true for the iteration
+
+            e.stopPropagation();
+            if(disableSquares) return;
+    
+            if (this === randomSqaure) {
+                disableSquares = true;
+                document.querySelector('h2').innerHTML = 'Correct!';
+                randomSqaure.style.borderColor = 'yellow';
+                nextLvlBtn.style.display = 'block';
+            } else {
+                lives--;
+                livesNumber.innerHTML = `${lives}`;
+                if (lives == 0) {
+                    disableSquares = true;
+                    gameOver = true;
+                    document.querySelector('h2').innerHTML = 'Game over!';
+                    randomSqaure.style.borderColor = 'yellow';
+                    resetBtn.style.display = 'block';
+                }
+            }
+        });
+    });
+}
 
 
-livesTitle.style.display = 'inline-block'
-livesNumber.innerHTML = `${lives}`;
+function nextLevel(level) {
+    
+}
+
+function resetStartOver() {
+
+}
+
 
 // EVENT LISTENERS
 
-colourSqs.forEach(square => {
-    square.addEventListener('click', function () {
-        // return nothing if game over is true for the iteration
-        if(gameOver) return;
+startBtn.addEventListener('click', function (){
+    startBtn.style.display = 'none';
 
-        if (this === randomSqaure) {
-            gameOver = true;
-            document.querySelector('h2').innerHTML = 'Correct!';
-            randomSqaure.style.borderColor = 'yellow';
-        } else {
-            lives--;
-            livesNumber.innerHTML = `${lives}`;
-            if (lives == 0) {
-                gameOver = true;
-                document.querySelector('h2').innerHTML = 'Game over!';
-                randomSqaure.style.borderColor = 'yellow';
-            }
-        }
-    });
-});
+    livesTitle.style.display = 'inline-block';
+    livesNumber.style.display = 'inline-block';
 
-console.log(colourSqs);
+    game();
+
+    console.log(colourSqs);
+
+})
 
 
 
