@@ -6,8 +6,6 @@ const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
 const nextLvlBtn = document.querySelector('#nextLevel');
 
-// const rawData = document.getElementById('gameData').textContent;
-
 let currentLevel = 1; // go to level 6x6 but have 20 levels 
 let lives = 3;
 let gameOver = false;
@@ -18,25 +16,40 @@ let colourSqs;
 let gameData = null;
 
 // load gameData
-async function loadGameData() {
-    try {
-        const response = await fetch('./data.json');
-        const data = await response.json();
-
-        gameData = data;
-        afterDataIsLoaded();
-    } catch (e) {
-        console.error('Failed to load JSON:', e);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadGameData();
-  });
-
-function afterDataIsLoaded () {
+gameData = {
+    "1": {"size": 1, "adjust":20},
+    "2": {"size": 1, "adjust":18}, 
+    "3": {"size": 1, "adjust":12}, 
+    "4": {"size": 1, "adjust":10}, 
+    "5": {"size": 2, "adjust":18}, 
+    "6": {"size": 2, "adjust":16},
+    "7": {"size": 2, "adjust":14},
+    "8": {"size": 2, "adjust":12},
+    "9": {"size": 2, "adjust":10},
+    "10": {"size": 3, "adjust":14},
+    "11": {"size": 3, "adjust":12},
+    "12": {"size": 3, "adjust":12},
+    "13": {"size": 3, "adjust":10},
+    "14": {"size": 3, "adjust": 8},
+    "15": {"size": 4, "adjust": 12},
+    "16": {"size": 4, "adjust": 10},
+    "17": {"size": 4, "adjust": 8},
+    "18": {"size": 4, "adjust": 8},
+    "19": {"size": 4, "adjust": 6},
+    "20": {"size": 4, "adjust": 6}, 
+    "21": {"size": 5, "adjust": 8}, 
+    "22": {"size": 5, "adjust": 6}, 
+    "23": {"size": 5, "adjust": 6}, 
+    "24": {"size": 5, "adjust": 5}, 
+    "25": {"size": 5, "adjust": 5}, 
+    "26": {"size": 5, "adjust": 5}, 
+    "27": {"size": 5, "adjust": 4}, 
+    "28": {"size": 5, "adjust": 4}, 
+    "29": {"size": 5, "adjust": 4}, 
+    "30": {"size": 5, "adjust": 4}
 };
-//
+
+// CORE FUNCTIONS
 
 const makeBaseColor = () => {
     let rVal = Math.floor(Math.random() * 255) + 1;
@@ -109,6 +122,7 @@ function game() {
     randomSqaure = randomSelectSquare(grid); 
     randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
 
+    // add starting lives to view
     livesNumber.innerHTML = `${lives}`;
 
     playSqaures(colourSqs);
@@ -129,7 +143,7 @@ function playSqaures(gameSqs) {
                 document.querySelector('h2').innerHTML = 'Correct!';
                 randomSqaure.style.borderColor = 'yellow';
                 nextLvlBtn.style.display = 'block';
-                currentLevel++;
+                // currentLevel++;
             } else {
                 lives--;
                 livesNumber.innerHTML = `${lives}`;
