@@ -19,8 +19,8 @@ let gameData = null;
 gameData = {
     "1": {"size": 1, "adjust":20},
     "2": {"size": 1, "adjust":18}, 
-    "3": {"size": 1, "adjust":12}, 
-    "4": {"size": 1, "adjust":10}, 
+    "3": {"size": 1, "adjust":14}, 
+    "4": {"size": 1, "adjust":12}, 
     "5": {"size": 2, "adjust":18}, 
     "6": {"size": 2, "adjust":16},
     "7": {"size": 2, "adjust":14},
@@ -37,20 +37,24 @@ gameData = {
     "18": {"size": 4, "adjust": 8},
     "19": {"size": 4, "adjust": 6},
     "20": {"size": 4, "adjust": 6}, 
-    "21": {"size": 5, "adjust": 8}, 
-    "22": {"size": 5, "adjust": 6}, 
-    "23": {"size": 5, "adjust": 6}, 
-    "24": {"size": 5, "adjust": 5}, 
-    "25": {"size": 5, "adjust": 5}, 
-    "26": {"size": 5, "adjust": 5}, 
-    "27": {"size": 5, "adjust": 4}, 
-    "28": {"size": 5, "adjust": 4}, 
+    "21": {"size": 5, "adjust": 14}, 
+    "22": {"size": 5, "adjust": 14}, 
+    "23": {"size": 5, "adjust": 12}, 
+    "24": {"size": 5, "adjust": 10}, 
+    "25": {"size": 5, "adjust": 8}, 
+    "26": {"size": 5, "adjust": 8}, 
+    "27": {"size": 5, "adjust": 6}, 
+    "28": {"size": 5, "adjust": 6}, 
     "29": {"size": 5, "adjust": 4}, 
     "30": {"size": 5, "adjust": 4}
 };
 
 // CORE FUNCTIONS
 
+/**
+ * Generates a random RGB base colour (later applied to chosen object), containing the individual values and the string format
+ * @returns {Array} An array of the individual RGB values and the string version i.e. [int, int, int, string]
+ */
 const makeBaseColor = () => {
     let rVal = Math.floor(Math.random() * 255) + 1;
     let gVal = Math.floor(Math.random() * 255) + 1;
@@ -59,31 +63,43 @@ const makeBaseColor = () => {
     return [rVal, gVal, bVal, `rgb(${rVal}, ${gVal}, ${bVal})`]
 }
 
-const generateGrid = (level) => {
-    let sqaures = (level + 1) ** 2;
+/**
+ * Creates a grid of sqaures - given a squared value, created empty divs and is appended to the document. 
+ * This is then formatted in a grid pattern using CSS grid
+ * @param {string or int} size - 
+ */
+const generateGrid = (size) => {
+    let sqaures = (size + 1) ** 2;
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
         sqaure.classList.add('grid-item')//, 'regular');
         grid.appendChild(sqaure);
     }
-    grid.style.gridTemplateColumns = `repeat(${level + 1}, 100px [col-start])`;
+    grid.style.gridTemplateColumns = `repeat(${size + 1}, 100px [col-start])`;
 }
 
+/**
+ * Selects a random child of a queried object (in this case "grid")
+ * @param {Object} gridObj - a queried object
+ * @returns - a selected child of the queried object
+ */
 const randomSelectSquare = (gridObj) => {
     let childrenSquares = gridObj.children;
     let chosenSqaure = childrenSquares[Math.floor(Math.random() * childrenSquares.length)];
 
-    // chosenSqaure.classList.toggle('regular') //switch off square for the correct sqaure
-    // chosenSqaure.classList.add('correct');
     return chosenSqaure 
 }
 
-const adjustColour = (colour) => {
+/**
+ * Adjusts the chosen base for a target object by randomly select R, G or B to be adjusted
+ * @param {Array} colour - an array of the individual RGB values and the string format i.e. [int, int, int, string]
+ * @param {Int} level - the current level of the game; the key for the gameData object
+ * @returns The string form of the adjusted RBG colour
+ */
+const adjustColour = (colour, level) => {
     let adjustedColour;
 
-    // range -4 to 4 
-    // let adjusters = [-10, -7, -5, 5, 7, 10];
-    let adjuster = gameData[currentLevel]["adjust"]; //adjusters[Math.floor(Math.random() * adjusters.length)]; 
+    let adjuster = gameData[level]["adjust"]; //adjusters[Math.floor(Math.random() * adjusters.length)]; 
 
     // grab only the rgb values from the original base colour
     let colour_vals = colour.slice(0,3);
@@ -94,7 +110,6 @@ const adjustColour = (colour) => {
     adjustedColour = `rgb(${colour_vals[0]}, ${colour_vals[1]}, ${colour_vals[2]})`;
 
     return adjustedColour
-
 }
 
 // LANDING PAGE VIEW - maybe put in start button event 
@@ -105,8 +120,8 @@ resetBtn.style.display = 'none';
 nextLvlBtn.style.display = 'none';
 // grid.style.display = 'none';
 
-function game() {
-    generateGrid(currentLevel); // change/reset level and lives in other functions (Reset and next)
+function game(level, size) {
+    generateGrid(size); // change/reset level and lives in other functions (Reset and next)
 
     // Select divs after created
     colourSqs = document.querySelectorAll('.grid-item');
@@ -117,10 +132,11 @@ function game() {
 
     for(i = 0; i < colourSqs.length; i++){
         colourSqs[i].style.backgroundColor = chosenColor;
+        colourSqs[i].style.borderColor = 'black';
     }
     
     randomSqaure = randomSelectSquare(grid); 
-    randomSqaure.style.backgroundColor = adjustColour(chosenColorArray);
+    randomSqaure.style.backgroundColor = adjustColour(chosenColorArray, level);
 
     // add starting lives to view
     livesNumber.innerHTML = `${lives}`;
@@ -130,6 +146,17 @@ function game() {
     
 }
 
+/**
+ * Event applied to each child object to:
+ * 1. Return nothing if disabled Sqaures is true (based on the following)
+ * 2. If the chosen sqaure the user selects is the target/correct square:
+ *      a. disable sqaures, notify user of correct answer
+ *      b. display next level button to move onto the next round
+ * 3. Else, lose a life and notify user of wrong answer
+ *      a. if lives is 0, disable sqaures and end the game, 
+ *      b. display reset game button 
+ * @param {Object} gameSqs - the HTML Collection object of the generated grid sqaures 
+ */
 function playSqaures(gameSqs) {
     gameSqs.forEach(square => {
         square.addEventListener('click', function (e) {
@@ -160,10 +187,6 @@ function playSqaures(gameSqs) {
 }
 
 
-function nextLevel(level) {
-    
-}
-
 function resetStartOver() {
 
 }
@@ -176,11 +199,28 @@ startBtn.addEventListener('click', function (){
     livesTitle.style.display = 'inline-block';
     livesNumber.style.display = 'inline-block';
 
-    game();
+    game(currentLevel, gameData[currentLevel]['size']);
 
     console.log(colourSqs);
 
 });
 
+nextLvlBtn.addEventListener('click', () => {
+    nextLvlBtn.style.display = 'none'; 
+    currentLevel++;
+
+    //reset for next level
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(e => e.remove());
+    document.querySelector('h2').innerHTML = '';
+    disableSquares = false;
+
+    game(currentLevel, gameData[currentLevel]['size']);
+    console.log(currentLevel);
+});
+
+resetBtn.addEventListener('click', () => {
+
+})
 
 
