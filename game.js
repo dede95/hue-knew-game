@@ -220,7 +220,16 @@ nextLvlBtn.addEventListener('click', () => {
 });
 
 resetBtn.addEventListener('click', () => {
+    resetBtn.style.display = 'none';
+    currentLevel = 1;
+    lives = 3;
 
+    //reset game back to level 1
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(e => e.remove());
+    document.querySelector('h2').innerHTML = '';
+    disableSquares = false;
+    game(currentLevel, gameData[currentLevel]['size']);
 })
 
 
