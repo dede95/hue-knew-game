@@ -1,6 +1,7 @@
 const grid = document.querySelector('#grid');
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
+let addLife = document.createElement('p');
 
 const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
@@ -52,7 +53,7 @@ gameData = {
 // CORE FUNCTIONS
 
 /**
- * Generates a random RGB base colour (later applied to chosen object), containing the individual values and the string format
+ * makeBaseColor: Generates a random RGB base colour (later applied to chosen object), containing the individual values and the string format
  * @returns {Array} An array of the individual RGB values and the string version i.e. [int, int, int, string]
  */
 const makeBaseColor = () => {
@@ -64,7 +65,8 @@ const makeBaseColor = () => {
 }
 
 /**
- * Creates a grid of sqaures - given a squared value, created empty divs and is appended to the document. 
+ * generateGrid: Creates a grid of sqaures - given a squared value, created empty divs 
+ * and is appended to the document. 
  * This is then formatted in a grid pattern using CSS grid
  * @param {string or int} size - 
  */
@@ -79,7 +81,7 @@ const generateGrid = (size) => {
 }
 
 /**
- * Selects a random child of a queried object (in this case "grid")
+ * randomSelectSquare: Selects a random child of a queried object (in this case "grid")
  * @param {Object} gridObj - a queried object
  * @returns - a selected child of the queried object
  */
@@ -91,7 +93,7 @@ const randomSelectSquare = (gridObj) => {
 }
 
 /**
- * Adjusts the chosen base for a target object by randomly select R, G or B to be adjusted
+ * adjustColour: Adjusts the chosen base for a target object by randomly select R, G or B to be adjusted
  * @param {Array} colour - an array of the individual RGB values and the string format i.e. [int, int, int, string]
  * @param {Int} level - the current level of the game; the key for the gameData object
  * @returns The string form of the adjusted RBG colour
@@ -143,11 +145,18 @@ function game(level, size) {
 
     playSqaures(colourSqs);
     
-    
+    // add extra life at checkpoint
+    if (level % 5 == 0) {
+        lives++;
+        addLife.innerHTML = 'You gained an extra life!'
+        document.body.appendChild(addLife);
+    } else {
+        addLife.remove();
+    }
 }
 
 /**
- * Event applied to each child object to:
+ * playSqaures: Event applied to each child object to:
  * 1. Return nothing if disabled Sqaures is true (based on the following)
  * 2. If the chosen sqaure the user selects is the target/correct square:
  *      a. disable sqaures, notify user of correct answer
@@ -186,12 +195,6 @@ function playSqaures(gameSqs) {
     });
 }
 
-
-function resetStartOver() {
-
-}
-
-
 // EVENT LISTENERS
 
 startBtn.addEventListener('click', function (){
@@ -204,6 +207,7 @@ startBtn.addEventListener('click', function (){
     console.log(colourSqs);
 
 });
+
 
 nextLvlBtn.addEventListener('click', () => {
     nextLvlBtn.style.display = 'none'; 
@@ -230,6 +234,6 @@ resetBtn.addEventListener('click', () => {
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
     game(currentLevel, gameData[currentLevel]['size']);
-})
+});
 
 
