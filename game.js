@@ -47,7 +47,18 @@ gameData = {
     "27": {"size": 5, "adjust": 4}, 
     "28": {"size": 5, "adjust": 2}, 
     "29": {"size": 5, "adjust": 2}, 
-    "30": {"size": 5, "adjust": 2}
+    "30": {"size": 5, "adjust": 2},
+    "31": {"size": 6, "adjust": 4}, 
+    "32": {"size": 6, "adjust": 4}, 
+    "33": {"size": 6, "adjust": 4},
+    "34": {"size": 6, "adjust": 2},
+    "35": {"size": 6, "adjust": 2},
+    "36": {"size": 6, "adjust": 2},
+    "37": {"size": 6, "adjust": 2},
+    "38": {"size": 6, "adjust": 2},
+    "39": {"size": 6, "adjust": 2},
+    "40": {"size": 6, "adjust": 2}
+
 };
 
 // CORE FUNCTIONS
