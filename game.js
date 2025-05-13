@@ -22,25 +22,25 @@ gameData = {
     "2": {"size": 1, "adjust":18}, 
     "3": {"size": 1, "adjust":14}, 
     "4": {"size": 1, "adjust":12}, 
-    "5": {"size": 2, "adjust":18}, 
-    "6": {"size": 2, "adjust":16},
-    "7": {"size": 2, "adjust":14},
-    "8": {"size": 2, "adjust":12},
+    "5": {"size": 2, "adjust":16}, 
+    "6": {"size": 2, "adjust":14},
+    "7": {"size": 2, "adjust":12},
+    "8": {"size": 2, "adjust":10},
     "9": {"size": 2, "adjust":10},
-    "10": {"size": 3, "adjust":14},
+    "10": {"size": 3, "adjust":12},
     "11": {"size": 3, "adjust":12},
-    "12": {"size": 3, "adjust":12},
-    "13": {"size": 3, "adjust":10},
-    "14": {"size": 3, "adjust": 8},
-    "15": {"size": 4, "adjust": 12},
+    "12": {"size": 3, "adjust":10},
+    "13": {"size": 3, "adjust":8},
+    "14": {"size": 3, "adjust": 6},
+    "15": {"size": 4, "adjust": 10},
     "16": {"size": 4, "adjust": 10},
     "17": {"size": 4, "adjust": 8},
     "18": {"size": 4, "adjust": 8},
     "19": {"size": 4, "adjust": 6},
     "20": {"size": 4, "adjust": 6}, 
-    "21": {"size": 5, "adjust": 14}, 
-    "22": {"size": 5, "adjust": 14}, 
-    "23": {"size": 5, "adjust": 12}, 
+    "21": {"size": 5, "adjust": 12}, 
+    "22": {"size": 5, "adjust": 12}, 
+    "23": {"size": 5, "adjust": 10}, 
     "24": {"size": 5, "adjust": 10}, 
     "25": {"size": 5, "adjust": 8}, 
     "26": {"size": 5, "adjust": 8}, 
@@ -134,7 +134,7 @@ function game(level, size) {
 
     for(i = 0; i < colourSqs.length; i++){
         colourSqs[i].style.backgroundColor = chosenColor;
-        colourSqs[i].style.borderColor = 'black';
+        // colourSqs[i].style.borderColor = 'black';
     }
     
     randomSqaure = randomSelectSquare(grid); 
@@ -177,7 +177,7 @@ function playSqaures(gameSqs) {
             if (this === randomSqaure) {
                 disableSquares = true;
                 document.querySelector('h2').innerHTML = 'Correct!';
-                randomSqaure.style.borderColor = 'yellow';
+                randomSqaure.style.border = 'yellow 2px solid';
                 nextLvlBtn.style.display = 'block';
                 // currentLevel++;
             } else {
@@ -187,7 +187,7 @@ function playSqaures(gameSqs) {
                     disableSquares = true;
                     gameOver = true;
                     document.querySelector('h2').innerHTML = 'Game over!';
-                    randomSqaure.style.borderColor = 'yellow';
+                    randomSqaure.style.border = 'yellow 2px solid';
                     resetBtn.style.display = 'block';
                 }
             }
