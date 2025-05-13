@@ -18,15 +18,15 @@ let gameData = null;
 
 // load gameData
 gameData = {
-    "1": {"size": 1, "adjust":20},
-    "2": {"size": 1, "adjust":18}, 
+    "1": {"size": 1, "adjust":18},
+    "2": {"size": 1, "adjust":16}, 
     "3": {"size": 1, "adjust":14}, 
     "4": {"size": 1, "adjust":12}, 
-    "5": {"size": 2, "adjust":16}, 
-    "6": {"size": 2, "adjust":14},
-    "7": {"size": 2, "adjust":12},
+    "5": {"size": 2, "adjust":14}, 
+    "6": {"size": 2, "adjust":12},
+    "7": {"size": 2, "adjust":10},
     "8": {"size": 2, "adjust":10},
-    "9": {"size": 2, "adjust":10},
+    "9": {"size": 2, "adjust":8},
     "10": {"size": 3, "adjust":12},
     "11": {"size": 3, "adjust":12},
     "12": {"size": 3, "adjust":10},
@@ -37,17 +37,17 @@ gameData = {
     "17": {"size": 4, "adjust": 8},
     "18": {"size": 4, "adjust": 8},
     "19": {"size": 4, "adjust": 6},
-    "20": {"size": 4, "adjust": 6}, 
-    "21": {"size": 5, "adjust": 12}, 
-    "22": {"size": 5, "adjust": 12}, 
-    "23": {"size": 5, "adjust": 10}, 
-    "24": {"size": 5, "adjust": 10}, 
-    "25": {"size": 5, "adjust": 8}, 
-    "26": {"size": 5, "adjust": 8}, 
-    "27": {"size": 5, "adjust": 6}, 
-    "28": {"size": 5, "adjust": 6}, 
-    "29": {"size": 5, "adjust": 4}, 
-    "30": {"size": 5, "adjust": 4}
+    "20": {"size": 4, "adjust": 5}, 
+    "21": {"size": 5, "adjust": 8}, 
+    "22": {"size": 5, "adjust": 8}, 
+    "23": {"size": 5, "adjust": 6}, 
+    "24": {"size": 5, "adjust": 6}, 
+    "25": {"size": 5, "adjust": 6}, 
+    "26": {"size": 5, "adjust": 4}, 
+    "27": {"size": 5, "adjust": 4}, 
+    "28": {"size": 5, "adjust": 2}, 
+    "29": {"size": 5, "adjust": 2}, 
+    "30": {"size": 5, "adjust": 2}
 };
 
 // CORE FUNCTIONS
@@ -57,9 +57,10 @@ gameData = {
  * @returns {Array} An array of the individual RGB values and the string version i.e. [int, int, int, string]
  */
 const makeBaseColor = () => {
-    let rVal = Math.floor(Math.random() * 255) + 1;
-    let gVal = Math.floor(Math.random() * 255) + 1;
-    let bVal = Math.floor(Math.random() * 255) + 1;
+    //select range of colours that are not too harsh
+    let rVal = Math.floor(Math.random() * 150) + 50;
+    let gVal = Math.floor(Math.random() * 150) + 50;
+    let bVal = Math.floor(Math.random() * 150) + 50;
 
     return [rVal, gVal, bVal, `rgb(${rVal}, ${gVal}, ${bVal})`]
 }
@@ -150,6 +151,7 @@ function game(level, size) {
         lives++;
         addLife.innerHTML = 'You gained an extra life!'
         document.body.appendChild(addLife);
+        livesNumber.innerHTML = lives;
     } else {
         addLife.remove();
     }

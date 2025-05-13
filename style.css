@@ -11,7 +11,7 @@
 }
 
 .grid-item:hover {
-    border: 1px solid yellow;
+    /* border: 1px solid yellow; */
     cursor: pointer;
     transform: scale(1.03);
 }
