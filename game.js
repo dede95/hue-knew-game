@@ -2,6 +2,8 @@ const grid = document.querySelector('#grid');
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
 let addLife = document.createElement('p');
+const roundsText = document.querySelector('#rounds');
+let roundsNumber = document.querySelector('#rounds span');
 
 const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
@@ -37,28 +39,27 @@ gameData = {
     "17": {"size": 4, "adjust": 8},
     "18": {"size": 4, "adjust": 8},
     "19": {"size": 4, "adjust": 6},
-    "20": {"size": 4, "adjust": 5}, 
+    "20": {"size": 4, "adjust": 6}, 
     "21": {"size": 5, "adjust": 8}, 
     "22": {"size": 5, "adjust": 8}, 
-    "23": {"size": 5, "adjust": 6}, 
-    "24": {"size": 5, "adjust": 6}, 
+    "23": {"size": 5, "adjust": 7}, 
+    "24": {"size": 5, "adjust": 7}, 
     "25": {"size": 5, "adjust": 6}, 
-    "26": {"size": 5, "adjust": 4}, 
-    "27": {"size": 5, "adjust": 4}, 
-    "28": {"size": 5, "adjust": 2}, 
-    "29": {"size": 5, "adjust": 2}, 
-    "30": {"size": 5, "adjust": 2},
+    "26": {"size": 5, "adjust": 6}, 
+    "27": {"size": 5, "adjust": 6}, 
+    "28": {"size": 5, "adjust": 4}, 
+    "29": {"size": 5, "adjust": 4}, 
+    "30": {"size": 5, "adjust": 4},
     "31": {"size": 6, "adjust": 4}, 
     "32": {"size": 6, "adjust": 4}, 
     "33": {"size": 6, "adjust": 4},
-    "34": {"size": 6, "adjust": 2},
-    "35": {"size": 6, "adjust": 2},
-    "36": {"size": 6, "adjust": 2},
-    "37": {"size": 6, "adjust": 2},
-    "38": {"size": 6, "adjust": 2},
-    "39": {"size": 6, "adjust": 2},
-    "40": {"size": 6, "adjust": 2}
-
+    "34": {"size": 6, "adjust": 4},
+    "35": {"size": 6, "adjust": 4},
+    "36": {"size": 6, "adjust": 4},
+    "37": {"size": 6, "adjust": 4},
+    "38": {"size": 6, "adjust": 3},
+    "39": {"size": 6, "adjust": 3},
+    "40": {"size": 6, "adjust": 3}
 };
 
 // CORE FUNCTIONS
@@ -132,6 +133,7 @@ livesTitle.style.display = 'none';
 livesNumber.style.display = 'none';
 resetBtn.style.display = 'none';
 nextLvlBtn.style.display = 'none';
+roundsText.style.display = 'none';
 // grid.style.display = 'none';
 
 function game(level, size) {
@@ -214,6 +216,8 @@ startBtn.addEventListener('click', function (){
     startBtn.style.display = 'none';
     livesTitle.style.display = 'inline-block';
     livesNumber.style.display = 'inline-block';
+    roundsText.style.display = 'block';
+    roundsNumber.innerHTML = `${currentLevel}`;
 
     game(currentLevel, gameData[currentLevel]['size']);
 
@@ -232,6 +236,8 @@ nextLvlBtn.addEventListener('click', () => {
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
 
+    roundsNumber.innerHTML = `${currentLevel}`;
+
     game(currentLevel, gameData[currentLevel]['size']);
     console.log(currentLevel);
 });
@@ -246,6 +252,9 @@ resetBtn.addEventListener('click', () => {
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
+
+    roundsNumber.innerHTML = `${currentLevel}`;
+
     game(currentLevel, gameData[currentLevel]['size']);
 });
 
