@@ -90,7 +90,8 @@ const generateGrid = (size) => {
         sqaure.classList.add('grid-item')//, 'regular');
         grid.appendChild(sqaure);
     }
-    grid.style.gridTemplateColumns = `repeat(${size + 1}, 100px [col-start])`;
+    grid.style.gridTemplateColumns = `repeat(${size + 1}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${size + 1}, 1fr)`;
 }
 
 /**
@@ -134,7 +135,6 @@ livesNumber.style.display = 'none';
 resetBtn.style.display = 'none';
 nextLvlBtn.style.display = 'none';
 roundsText.style.display = 'none';
-// grid.style.display = 'none';
 
 function game(level, size) {
     generateGrid(size); // change/reset level and lives in other functions (Reset and next)
@@ -192,7 +192,7 @@ function playSqaures(gameSqs) {
             if (this === randomSqaure) {
                 disableSquares = true;
                 document.querySelector('h2').innerHTML = 'Correct!';
-                randomSqaure.style.border = 'yellow 2px solid';
+                randomSqaure.style.border = 'orange 3px solid';
                 nextLvlBtn.style.display = 'block';
                 // currentLevel++;
             } else {
@@ -202,7 +202,7 @@ function playSqaures(gameSqs) {
                     disableSquares = true;
                     gameOver = true;
                     document.querySelector('h2').innerHTML = 'Game over!';
-                    randomSqaure.style.border = 'yellow 2px solid';
+                    randomSqaure.style.border = 'orange 3px solid';
                     resetBtn.style.display = 'block';
                 }
             }

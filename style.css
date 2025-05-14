@@ -1,17 +1,29 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.container,
+.row,
+.col {
+  height: 100%; /* Ensures the grid can truly use 100vh */
+}
+
 #grid {
     display: grid;
+    width: min(100vw, 100vh);
+    height: 100%;
+    gap: 5px
 }
 
 .grid-item {
-    border: 1px solid rgb(220, 220, 220);
-    width: 100px;
-    height: 100px;
-
+    width: 100%;
+    aspect-ratio: 1 / 1;
     transition: transform 100ms ease-in-out;
 }
 
 .grid-item:hover {
     /* border: 1px solid yellow; */
     cursor: pointer;
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
