@@ -87,13 +87,25 @@ const makeBaseColor = () => {
  */
 const generateGrid = (size) => {
     let sqaures = (size + 1) ** 2;
+    grid.style.gridTemplateColumns = `repeat(${size + 1}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${size + 1}, 1fr)`;
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
         sqaure.classList.add('grid-item')//, 'regular');
         grid.appendChild(sqaure);
+        //adding staggering visible effect
+        if (size < 4){
+            setTimeout(() => {
+                sqaure.classList.add('show')
+            }, i *100);
+        } else {
+            setTimeout(() => {
+                sqaure.classList.add('show')
+            }, i *50);
+        }
+        
     }
-    grid.style.gridTemplateColumns = `repeat(${size + 1}, 1fr)`;
-    grid.style.gridTemplateRows = `repeat(${size + 1}, 1fr)`;
+    
 }
 
 /**
@@ -226,7 +238,7 @@ startBtn.addEventListener('click', function (){
     roundsNumber.innerHTML = `${currentLevel}`;
 
     game(currentLevel, gameData[currentLevel]['size']);
-
+    grid.classList.add('')
     console.log(colourSqs);
 
 });
