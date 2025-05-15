@@ -9,6 +9,8 @@ const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
 const nextLvlBtn = document.querySelector('#nextLevel');
 
+resetBtn.classList.add('disabledbutton');
+
 let currentLevel = 1; // go to level 6x6 but have 20 levels 
 let lives = 3;
 let gameOver = false;
@@ -194,13 +196,13 @@ function playSqaures(gameSqs) {
                 document.querySelector('h2').innerHTML = 'Correct!';
                 randomSqaure.style.border = 'orange 3px solid';
                 nextLvlBtn.style.display = 'block';
-                resetBtn.disabled = true;
-                // currentLevel++;
+                // resetBtn.disabled = true;
             } else {
                 lives--;
                 livesNumber.innerHTML = `${lives}`;
                 if (lives === 0) {
-                    resetBtn.disabled = false;
+                    // resetBtn.disabled = false;
+                    resetBtn.classList.toggle('disabledbutton');
                     disableSquares = true;
                     gameOver = true;
                     document.querySelector('h2').innerHTML = 'Game over!';
@@ -256,7 +258,8 @@ resetBtn.addEventListener('click', () => {
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
-    resetBtn.disabled = true;
+    // resetBtn.disabled = true;
+    resetBtn.classList.toggle('disabledbutton');
 
     roundsNumber.innerHTML = `${currentLevel}`;
 

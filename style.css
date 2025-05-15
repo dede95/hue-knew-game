@@ -1,19 +1,92 @@
-html, body {
+html, body, .container-fluid, .row {
     height: 100%;
     margin: 0;
 }
 
-.container,
-.row,
-.col {
-  height: 100%; /* Ensures the grid can truly use 100vh */
+body {
+    background-color: rgb(255, 242, 217);
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+.menu-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.heading {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.heading h1 {
+    justify-content: center;
+    align-items: center;
+}
+
+.game-status {
+    height: 10vh;
+}
+
+.buttons {
+    height: 10vh;
+    display: flex;
+}
+
+#startGame,
+#resetGame,
+#nextLevel {
+    height: 48px;
+    border-radius: 3px;
+    padding: 10px 8px;
+    background-color: aqua;
+    color: rgb(49, 47, 42);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+#startGame {
+    background-color: rgb(250, 181, 51);
+    border: 2px solid rgb(248, 170, 25);
+}
+
+#resetGame {
+    background-color: rgb(250, 97, 51);
+    border: 2px solid rgb(248, 81, 25);
+}
+
+#nextLevel {
+    background-color: rgb(177, 250, 51);
+    border: 2px solid rgb(151, 248, 25);
+}
+
+#startGame:hover {
+    background-color: rgb(229, 165, 45);
+}
+
+#resetGame:hover {
+    background-color: rgb(232, 90, 46);
+}
+
+#nextLevel:hover {
+    background-color: rgb(163, 231, 47);
 }
 
 #grid {
     display: grid;
     width: min(100vw, 100vh);
     height: 100%;
-    gap: 5px
+    gap: 3px
 }
 
 .grid-item {
@@ -25,5 +98,5 @@ html, body {
 .grid-item:hover {
     /* border: 1px solid yellow; */
     cursor: pointer;
-    transform: scale(1.02);
+    transform: scale(0.98);
 }
