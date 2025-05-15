@@ -194,16 +194,18 @@ function playSqaures(gameSqs) {
                 document.querySelector('h2').innerHTML = 'Correct!';
                 randomSqaure.style.border = 'orange 3px solid';
                 nextLvlBtn.style.display = 'block';
+                resetBtn.disabled = true;
                 // currentLevel++;
             } else {
                 lives--;
                 livesNumber.innerHTML = `${lives}`;
-                if (lives == 0) {
+                if (lives === 0) {
+                    resetBtn.disabled = false;
                     disableSquares = true;
                     gameOver = true;
                     document.querySelector('h2').innerHTML = 'Game over!';
                     randomSqaure.style.border = 'orange 3px solid';
-                    resetBtn.style.display = 'block';
+                    // resetBtn.style.display = 'block';
                 }
             }
         });
@@ -214,6 +216,8 @@ function playSqaures(gameSqs) {
 
 startBtn.addEventListener('click', function (){
     startBtn.style.display = 'none';
+    resetBtn.style.display = 'block';
+    resetBtn.disabled = true;
     livesTitle.style.display = 'inline-block';
     livesNumber.style.display = 'inline-block';
     roundsText.style.display = 'block';
@@ -243,7 +247,7 @@ nextLvlBtn.addEventListener('click', () => {
 });
 
 resetBtn.addEventListener('click', () => {
-    resetBtn.style.display = 'none';
+    // resetBtn.style.display = 'none';
     currentLevel = 1;
     lives = 3;
 
@@ -252,6 +256,7 @@ resetBtn.addEventListener('click', () => {
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
+    resetBtn.disabled = true;
 
     roundsNumber.innerHTML = `${currentLevel}`;
 
