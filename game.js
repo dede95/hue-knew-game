@@ -68,19 +68,17 @@ initCircles();
 animate();
 
 // GSAP FONT ANIMATION
+
+let split = SplitText.create(".main-text", {
+    type:"chars, words, lines", 
+    mask: "chars"});
+
 document.fonts.ready.then(() => {
-    SplitText.create(".main-text", {
-        type:"chars, words, lines", 
-        mask: "chars",
-        onSplit: (self) => {
-            gsap.from(self.chars, {
-                y: 100,
-                autoAlpha:0, 
-                duration:0.4,
-                stagger: {
-                    amount: 0.4
-                }
-            }); 
+    gsap.from(split.chars, {
+        y: 100,
+        autoAlpha:0, 
+        stagger: {
+            amount: 0.8
         }
     });
 });
@@ -176,8 +174,11 @@ const makeBaseColor = () => {
  */
 const generateGrid = (size) => {
     let sqaures = (size + 1) ** 2;
-    grid.style.gridTemplateColumns = `repeat(${size + 1}, 1fr)`;
-    grid.style.gridTemplateRows = `repeat(${size + 1}, 1fr)`;
+    let gridSize = size + 1;
+
+    grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+    
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
         sqaure.classList.add('grid-item')//, 'regular');
@@ -195,6 +196,7 @@ const generateGrid = (size) => {
         
     }
     
+    return gridSize
 }
 
 /**
@@ -240,7 +242,7 @@ const adjustColour = (colour, level) => {
 // roundsText.style.display = 'none';
 
 function game(level, size) {
-    generateGrid(size); // change/reset level and lives in other functions (Reset and next)
+    let gridSize = generateGrid(size); // change/reset level and lives in other functions (Reset and next)
 
     // Select divs after created
     colourSqs = document.querySelectorAll('.grid-item');
@@ -251,7 +253,6 @@ function game(level, size) {
 
     for(i = 0; i < colourSqs.length; i++){
         colourSqs[i].style.backgroundColor = chosenColor;
-        // colourSqs[i].style.borderColor = 'black';
     }
     
     randomSqaure = randomSelectSquare(grid); 
@@ -330,7 +331,7 @@ startBtn.addEventListener('click', function (){
     startBtn.style.display = 'none';
     startScreen.style.display = 'none';
     mainGame.style.display = 'block';
-    
+
     resetBtn.style.display = 'block';
     resetBtn.disabled = true;
     livesTitle.style.display = 'inline-block';
@@ -348,14 +349,12 @@ startBtn.addEventListener('click', function (){
 nextLvlBtn.addEventListener('click', () => {
     nextLvlBtn.style.display = 'none'; 
     currentLevel++;
-
+    roundsNumber.innerHTML = `${currentLevel}`;
     //reset for next level
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
-
-    roundsNumber.innerHTML = `${currentLevel}`;
 
     game(currentLevel, gameData[currentLevel]['size']);
     console.log(currentLevel);
