@@ -328,20 +328,38 @@ document.addEventListener('DOMContentLoaded', function (){
 })
 
 startBtn.addEventListener('click', function (){
-    startBtn.style.display = 'none';
-    startScreen.style.display = 'none';
-    mainGame.style.display = 'block';
 
-    resetBtn.style.display = 'block';
-    resetBtn.disabled = true;
-    livesTitle.style.display = 'inline-block';
-    livesNumber.style.display = 'inline-block';
-    roundsText.style.display = 'block';
-    roundsNumber.innerHTML = `${currentLevel}`;
+    // Animations of disappearing text
+    gsap.to(split.chars, {
+        y: 100,
+        autoAlpha:0, 
+        duration: 1.2,
+        stagger: {
+            amount: 1,
+            axis: "y", 
+            from: "end"
+        }
+    })
 
-    game(currentLevel, gameData[currentLevel]['size']);
-    grid.classList.add('')
-    console.log(colourSqs);
+    // showing game screen after animation
+    setTimeout(() => {
+        startBtn.style.display = 'none';
+        startScreen.style.display = 'none';
+        mainGame.style.display = 'block';
+
+        resetBtn.style.display = 'block';
+        resetBtn.disabled = true;
+        livesTitle.style.display = 'inline-block';
+        livesNumber.style.display = 'inline-block';
+        roundsText.style.display = 'block';
+        roundsNumber.innerHTML = `${currentLevel}`;
+
+        game(currentLevel, gameData[currentLevel]['size']);
+        grid.classList.add('')
+        console.log(colourSqs);
+    }, 1250)
+
+    
 
 });
 
