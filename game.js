@@ -1,3 +1,92 @@
+// START SCREEN
+
+startScreen = document.querySelector('.start-screen');
+mainGame = document.querySelector('.game-play');
+
+gsap.registerPlugin(SplitText);
+const canvas = document.querySelector("#canvas");
+const ctx = canvas.getContext("2d");
+
+function randomBtwn(min, max){
+    return Math.random() *(max-min) + min;
+}
+
+let circles = [];
+const colours = ["rgba(95, 95, 255, 0.8)", "rgba(241, 53, 182, 0.8)", "rgba(200, 255, 0, 0.9)"];
+document.body.style.backgroundColor = "rgba(253, 255, 149, 0.8)";
+
+function initCircles(){
+    circles = [];
+
+    let circleCount = window.innerWidth / 100;
+    for (let i = 0; i < circleCount; i++) {
+        let radius = window.innerWidth / 6;
+        let x = randomBtwn(radius, canvas.width - radius);
+        let y = randomBtwn(radius, canvas.height - radius);
+        let dx = randomBtwn(window.innerWidth / -2000, window.innerWidth / 2000);
+        let dy = randomBtwn(window.innerWidth / -2000, window.innerWidth / 2000);
+        let colour = colours[Math.floor(Math.random() * colours.length)];
+        circles.push({x, y, dx, dy, radius, colour});
+    }
+}
+
+function drawCircles(circle){
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI*2, false); 
+    ctx.fillStyle = circle.colour;
+    ctx.fill();
+    ctx.closePath();
+}
+
+function animate(){
+    requestAnimationFrame(animate);
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
+    circles.forEach(circle => {
+        if (circle.x + circle.radius > canvas.width || circle.x - circle.radius <0) {
+            circle.dx = -circle.dx;
+        }
+        if (circle.y + circle.radius > canvas.height || circle.y - circle.radius <0) {
+            circle.dy = -circle.dy;
+        }
+        circle.x += circle.dx;
+        circle.y += circle.dy;
+        drawCircles(circle);
+    });
+}
+
+function resizeCanvas(){
+    canvas.width = window.innerWidth * 1.5;
+    canvas.height = window.innerHeight * 1.5;
+    initCircles();
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+initCircles();
+animate();
+
+// GSAP FONT ANIMATION
+document.fonts.ready.then(() => {
+    SplitText.create(".main-text", {
+        type:"chars, words, lines", 
+        mask: "chars",
+        onSplit: (self) => {
+            gsap.from(self.chars, {
+                y: 100,
+                autoAlpha:0, 
+                duration:0.4,
+                stagger: {
+                    amount: 0.4
+                }
+            }); 
+        }
+    });
+});
+
+// MAIN GAME
+
 const grid = document.querySelector('#grid');
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
@@ -144,11 +233,11 @@ const adjustColour = (colour, level) => {
 
 // LANDING PAGE VIEW - maybe put in start button event 
 
-livesTitle.style.display = 'none';
-livesNumber.style.display = 'none';
-resetBtn.style.display = 'none';
-nextLvlBtn.style.display = 'none';
-roundsText.style.display = 'none';
+// livesTitle.style.display = 'none';
+// livesNumber.style.display = 'none';
+// resetBtn.style.display = 'none';
+// nextLvlBtn.style.display = 'none';
+// roundsText.style.display = 'none';
 
 function game(level, size) {
     generateGrid(size); // change/reset level and lives in other functions (Reset and next)
@@ -177,7 +266,8 @@ function game(level, size) {
     if (level % 5 == 0) {
         lives++;
         addLife.innerHTML = 'You gained an extra life!'
-        document.body.appendChild(addLife);
+        // document.body.appendChild(addLife);
+        document.body.querySelector('#rounds').insertAdjacentElement('afterend', addLife);
         livesNumber.innerHTML = lives;
     } else {
         addLife.remove();
@@ -228,8 +318,19 @@ function playSqaures(gameSqs) {
 
 // EVENT LISTENERS
 
+document.addEventListener('DOMContentLoaded', function (){
+    livesTitle.style.display = 'none';
+    livesNumber.style.display = 'none';
+    resetBtn.style.display = 'none';
+    nextLvlBtn.style.display = 'none';
+    roundsText.style.display = 'none';
+})
+
 startBtn.addEventListener('click', function (){
     startBtn.style.display = 'none';
+    startScreen.style.display = 'none';
+    mainGame.style.display = 'block';
+    
     resetBtn.style.display = 'block';
     resetBtn.disabled = true;
     livesTitle.style.display = 'inline-block';
