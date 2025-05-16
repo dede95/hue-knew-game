@@ -36,6 +36,7 @@ body {
 
 .main-text h1 {
     font-size: 4rem;
+    color: rgb(15, 15, 223);
 }
 
 .main-text p {
@@ -171,7 +172,16 @@ body {
     transform: scale(0.98);
 }
 
-
+#lives-status-popup {
+    position: absolute;
+    top: 50vh;
+    left:70vw;
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+    transform-origin: center;
+}
 
 @media (max-width: 991.98px) {
     .game-play {
@@ -201,6 +211,13 @@ body {
     .lives-and-rounds {
         display: flex;
     }
+
+    #lives-status-popup {
+        position: absolute;
+        top: 65vh;
+        left:50vw;
+        
+    }    
 
     #resetGame, #nextLevel {
         align-self: flex-end;

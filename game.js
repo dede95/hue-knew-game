@@ -67,30 +67,92 @@ window.addEventListener("resize", resizeCanvas);
 initCircles();
 animate();
 
-// GSAP FONT ANIMATION
+// GSAP FONT START SCREEN + LIVES POP UP ANIMATION
 
 let split = SplitText.create(".main-text", {
     type:"chars, words, lines", 
     mask: "chars"});
 
-document.fonts.ready.then(() => {
-    gsap.from(split.chars, {
-        y: 100,
-        autoAlpha:0, 
-        stagger: {
-            amount: 0.8
+// let livesPopSplit = SplitText.create("#lives-status-popup", {
+//     type:"chars, words, lines", 
+//     mask: "chars"});   
+
+const textAnimation = (item, toOrFrom, speed, granularity) => {
+    
+    if(toOrFrom === "from") {
+        if(speed === "norm"){
+            gsap.from(item[granularity], {
+                y: 100,
+                autoAlpha:0, 
+                stagger: {
+                    amount: 0.8
+                }
+            });
+        } else if (speed === "fast"){
+            gsap.from(item[granularity], {
+                y: 100,
+                autoAlpha:0, 
+                stagger: {
+                    amount: 0.4
+                }
+            });
         }
-    });
+        
+    } else if(toOrFrom === "to"){
+        if(speed === "norm"){
+            gsap.to(item[granularity], {
+                y: 100,
+                autoAlpha:0, 
+                duration: 1.2,
+                stagger: {
+                    amount: 1,
+                    axis: "y", 
+                    from: "end"
+                }
+            })
+        } else if (speed === "fast"){
+            gsap.to(item[granularity], {
+                y: 100,
+                autoAlpha:0, 
+                duration: 0.8,
+                stagger: {
+                    amount: 1,
+                    axis: "y", 
+                    from: "end"
+                }
+            })
+        }
+        
+    }
+}
+
+
+
+// document.fonts.ready.then(() => {
+//     gsap.from(split.chars, {
+//         y: 100,
+//         autoAlpha:0, 
+//         stagger: {
+//             amount: 0.8
+//         }
+//     });
+// });
+
+document.fonts.ready.then(() => {
+    textAnimation(split, "from", "norm", "chars");
 });
 
 // MAIN GAME
 
 const grid = document.querySelector('#grid');
+const mainHeading = document.querySelector(".heading")
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
+const popUp = document.querySelector('#lives-status-popup')
 let addLife = document.createElement('p');
 const roundsText = document.querySelector('#rounds');
 let roundsNumber = document.querySelector('#rounds span');
+
 
 const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
@@ -300,10 +362,31 @@ function playSqaures(gameSqs) {
                 randomSqaure.style.border = 'orange 3px solid';
                 nextLvlBtn.style.display = 'block';
                 // resetBtn.disabled = true;
+
+
             } else {
                 lives--;
                 livesNumber.innerHTML = `${lives}`;
-                if (lives === 0) {
+
+                if(lives > 0) {
+                    popUp.innerHTML = '-1 life';
+                    popUp.style.color = 'red';
+                    popUp.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                    let livesPopSplit = SplitText.create("#lives-status-popup", {
+                        type:"chars, words, lines", 
+                        mask: "chars"});
+
+                    popUp.style.display = 'block';
+                    textAnimation(livesPopSplit, "from", "fast", "chars");
+                    
+                    setTimeout(() => {
+                        textAnimation(livesPopSplit, "to", "fast", "chars");
+                        setTimeout(() => {
+                            popUp.style.display = 'none';
+                            popUp.innerHTML = ''
+                        }, 200);
+                    }, 900)
+                } else if (lives === 0) {
                     // resetBtn.disabled = false;
                     resetBtn.classList.toggle('disabledbutton');
                     disableSquares = true;
@@ -312,6 +395,10 @@ function playSqaures(gameSqs) {
                     randomSqaure.style.border = 'orange 3px solid';
                     // resetBtn.style.display = 'block';
                 }
+                
+
+
+                
             }
         });
     });
@@ -325,21 +412,18 @@ document.addEventListener('DOMContentLoaded', function (){
     resetBtn.style.display = 'none';
     nextLvlBtn.style.display = 'none';
     roundsText.style.display = 'none';
+    mainHeading.style.display = 'none';
+    mainGame.style.display = 'none';
+    popUp.style.display = 'none'
+
 })
 
 startBtn.addEventListener('click', function (){
 
     // Animations of disappearing text
-    gsap.to(split.chars, {
-        y: 100,
-        autoAlpha:0, 
-        duration: 1.2,
-        stagger: {
-            amount: 1,
-            axis: "y", 
-            from: "end"
-        }
-    })
+    document.fonts.ready.then(() => {
+        textAnimation(split, "to", "norm", "chars");
+    });
 
     // showing game screen after animation
     setTimeout(() => {
@@ -347,6 +431,7 @@ startBtn.addEventListener('click', function (){
         startScreen.style.display = 'none';
         mainGame.style.display = 'block';
 
+        mainHeading.style.display = 'block';
         resetBtn.style.display = 'block';
         resetBtn.disabled = true;
         livesTitle.style.display = 'inline-block';
