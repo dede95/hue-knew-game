@@ -183,6 +183,19 @@ body {
     transform-origin: center;
 }
 
+#popupBig {
+    position: absolute;
+    top: 45vh;
+    left:65vw;
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.8rem;
+    transform-origin: center;
+}
+
+
+
 @media (max-width: 991.98px) {
     .game-play {
         height: 100%;
@@ -217,7 +230,14 @@ body {
         top: 65vh;
         left:50vw;
         
-    }    
+    }  
+
+    #popupBig {
+        position: absolute;
+        top: 55vh;
+        left:35vw;
+        
+    }   
 
     #resetGame, #nextLevel {
         align-self: flex-end;

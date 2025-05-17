@@ -148,7 +148,8 @@ const grid = document.querySelector('#grid');
 const mainHeading = document.querySelector(".heading")
 const livesTitle = document.querySelector('#lives');
 const livesNumber = document.querySelector('#lives span');
-const popUp = document.querySelector('#lives-status-popup')
+const livesPopUp = document.querySelector('#lives-status-popup');
+const gameStatusPopUp = document.querySelector('#popupBig');
 let addLife = document.createElement('p');
 const roundsText = document.querySelector('#rounds');
 let roundsNumber = document.querySelector('#rounds span');
@@ -156,7 +157,7 @@ let roundsNumber = document.querySelector('#rounds span');
 
 const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
-const nextLvlBtn = document.querySelector('#nextLevel');
+// const nextLvlBtn = document.querySelector('#nextLevel');
 
 resetBtn.classList.add('disabledbutton');
 
@@ -304,7 +305,7 @@ const adjustColour = (colour, level) => {
 // roundsText.style.display = 'none';
 
 function game(level, size) {
-    let gridSize = generateGrid(size); // change/reset level and lives in other functions (Reset and next)
+    generateGrid(size); // change/reset level and lives in other functions (Reset and next)
 
     // Select divs after created
     colourSqs = document.querySelectorAll('.grid-item');
@@ -358,9 +359,27 @@ function playSqaures(gameSqs) {
     
             if (this === randomSqaure) {
                 disableSquares = true;
-                document.querySelector('h2').innerHTML = 'Correct!';
                 randomSqaure.style.border = 'orange 3px solid';
-                nextLvlBtn.style.display = 'block';
+                // nextLvlBtn.style.display = 'block';
+
+                gameStatusPopUp.innerHTML = 'Correct!';
+                let gSPopSplit = SplitText.create("#popupBig", {
+                    type:"chars, words, lines", 
+                    mask: "chars"});
+                gameStatusPopUp.style.display = 'block';
+                textAnimation(gSPopSplit, "from", "fast", "chars");
+                
+
+                //complete delayed "Correct" animation + play the next level 0.4s after animation finishes
+                setTimeout(() => {
+                    textAnimation(gSPopSplit, "to", "norm", "chars");
+                    setTimeout(() => {
+                        gameStatusPopUp.style.display = 'none';
+                        gameStatusPopUp.innerHTML = '';
+                        playNextLevel();
+                    }, 400);
+                }, 1800)
+                
                 // resetBtn.disabled = true;
 
 
@@ -369,21 +388,21 @@ function playSqaures(gameSqs) {
                 livesNumber.innerHTML = `${lives}`;
 
                 if(lives > 0) {
-                    popUp.innerHTML = '-1 life';
-                    popUp.style.color = 'red';
-                    popUp.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                    livesPopUp.innerHTML = '-1 life';
+                    livesPopUp.style.color = 'red';
+                    livesPopUp.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
                     let livesPopSplit = SplitText.create("#lives-status-popup", {
                         type:"chars, words, lines", 
                         mask: "chars"});
 
-                    popUp.style.display = 'block';
+                    livesPopUp.style.display = 'block';
                     textAnimation(livesPopSplit, "from", "fast", "chars");
                     
                     setTimeout(() => {
                         textAnimation(livesPopSplit, "to", "fast", "chars");
                         setTimeout(() => {
-                            popUp.style.display = 'none';
-                            popUp.innerHTML = ''
+                            livesPopUp.style.display = 'none';
+                            livesPopUp.innerHTML = ''
                         }, 200);
                     }, 900)
                 } else if (lives === 0) {
@@ -410,11 +429,12 @@ document.addEventListener('DOMContentLoaded', function (){
     livesTitle.style.display = 'none';
     livesNumber.style.display = 'none';
     resetBtn.style.display = 'none';
-    nextLvlBtn.style.display = 'none';
+    // nextLvlBtn.style.display = 'none';
     roundsText.style.display = 'none';
     mainHeading.style.display = 'none';
     mainGame.style.display = 'none';
-    popUp.style.display = 'none'
+    livesPopUp.style.display = 'none';
+    gameStatusPopUp.style.display = 'none';
 
 })
 
@@ -440,6 +460,7 @@ startBtn.addEventListener('click', function (){
         roundsNumber.innerHTML = `${currentLevel}`;
 
         game(currentLevel, gameData[currentLevel]['size']);
+        
         grid.classList.add('')
         console.log(colourSqs);
     }, 1250)
@@ -449,11 +470,26 @@ startBtn.addEventListener('click', function (){
 });
 
 
-nextLvlBtn.addEventListener('click', () => {
-    nextLvlBtn.style.display = 'none'; 
+// nextLvlBtn.addEventListener('click', () => {
+//     nextLvlBtn.style.display = 'none'; 
+//     currentLevel++;
+//     roundsNumber.innerHTML = `${currentLevel}`;
+//     //reset for next level
+//     const gridItems = document.querySelectorAll('.grid-item');
+//     gridItems.forEach(e => e.remove());
+//     document.querySelector('h2').innerHTML = '';
+//     disableSquares = false;
+
+//     game(currentLevel, gameData[currentLevel]['size']);
+//     console.log(currentLevel);
+// });
+
+
+function playNextLevel() {
+    // nextLvlBtn.style.display = 'none'; 
     currentLevel++;
     roundsNumber.innerHTML = `${currentLevel}`;
-    //reset for next level
+
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
@@ -461,7 +497,7 @@ nextLvlBtn.addEventListener('click', () => {
 
     game(currentLevel, gameData[currentLevel]['size']);
     console.log(currentLevel);
-});
+}
 
 resetBtn.addEventListener('click', () => {
     // resetBtn.style.display = 'none';
