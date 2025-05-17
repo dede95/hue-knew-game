@@ -73,9 +73,6 @@ let split = SplitText.create(".main-text", {
     type:"chars, words, lines", 
     mask: "chars"});
 
-// let livesPopSplit = SplitText.create("#lives-status-popup", {
-//     type:"chars, words, lines", 
-//     mask: "chars"});   
 
 const textAnimation = (item, toOrFrom, speed, granularity) => {
     
@@ -127,16 +124,6 @@ const textAnimation = (item, toOrFrom, speed, granularity) => {
 }
 
 
-
-// document.fonts.ready.then(() => {
-//     gsap.from(split.chars, {
-//         y: 100,
-//         autoAlpha:0, 
-//         stagger: {
-//             amount: 0.8
-//         }
-//     });
-// });
 
 document.fonts.ready.then(() => {
     textAnimation(split, "from", "norm", "chars");
@@ -230,8 +217,9 @@ const makeBaseColor = () => {
 }
 
 /**
- * generateGrid: Creates a grid of sqaures - given a squared value, created empty divs 
- * and is appended to the document. 
+ * generateGrid: Creates a grid of sqaures - given a squared value, creates empty divs 
+ * and is appended to the document. Additinoally overlays an animation to indicate 
+ * the level stage the player is currently on.
  * This is then formatted in a grid pattern using CSS grid
  * @param {string or int} size - 
  */
@@ -241,7 +229,21 @@ const generateGrid = (size) => {
 
     grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
+    // game level pop up animation
+    if (currentLevel % 5 === 0){
+        gameStatusPopUp.innerHTML = `Level ${currentLevel} <br> <p>you gained a life!</p>`;
+    } else {
+        gameStatusPopUp.innerHTML = `Level ${currentLevel}`;
+    }
+
+    let gSPopSplit = SplitText.create("#popupBig", {
+        type:"chars, words, lines", 
+        mask: "chars"});
+    gameStatusPopUp.style.display = 'block';
+    textAnimation(gSPopSplit, "from", "fast", "chars");
     
+    // generate and show grid
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
         sqaure.classList.add('grid-item')//, 'regular');
@@ -258,6 +260,15 @@ const generateGrid = (size) => {
         }
         
     }
+
+    // remove game level pop up animation
+    setTimeout(() => {
+        textAnimation(gSPopSplit, "to", "fast", "chars");
+        setTimeout(() => {
+            gameStatusPopUp.style.display = 'none';
+            gameStatusPopUp.innerHTML = '';
+        }, 400);
+    }, 1500)
     
     return gridSize
 }
@@ -298,12 +309,6 @@ const adjustColour = (colour, level) => {
 
 // LANDING PAGE VIEW - maybe put in start button event 
 
-// livesTitle.style.display = 'none';
-// livesNumber.style.display = 'none';
-// resetBtn.style.display = 'none';
-// nextLvlBtn.style.display = 'none';
-// roundsText.style.display = 'none';
-
 function game(level, size) {
     generateGrid(size); // change/reset level and lives in other functions (Reset and next)
 
@@ -323,19 +328,13 @@ function game(level, size) {
 
     // add starting lives to view
     livesNumber.innerHTML = `${lives}`;
-
-    playSqaures(colourSqs);
+    //delay play until animations in generateGrid has finished
+    setTimeout(() => {
+        playSqaures(colourSqs);
+        //activating hover once animation is done
+        colourSqs.forEach(e => e.classList.add('hoverable'));
+    }, 2000);
     
-    // add extra life at checkpoint
-    if (level % 5 == 0) {
-        lives++;
-        addLife.innerHTML = 'You gained an extra life!'
-        // document.body.appendChild(addLife);
-        document.body.querySelector('#rounds').insertAdjacentElement('afterend', addLife);
-        livesNumber.innerHTML = lives;
-    } else {
-        addLife.remove();
-    }
 }
 
 /**
@@ -359,8 +358,7 @@ function playSqaures(gameSqs) {
     
             if (this === randomSqaure) {
                 disableSquares = true;
-                randomSqaure.style.border = 'orange 3px solid';
-                // nextLvlBtn.style.display = 'block';
+                randomSqaure.style.border = 'orange 4px solid';
 
                 gameStatusPopUp.innerHTML = 'Correct!';
                 let gSPopSplit = SplitText.create("#popupBig", {
@@ -378,7 +376,7 @@ function playSqaures(gameSqs) {
                         gameStatusPopUp.innerHTML = '';
                         playNextLevel();
                     }, 400);
-                }, 1800)
+                }, 1500)
                 
                 // resetBtn.disabled = true;
 
@@ -390,7 +388,7 @@ function playSqaures(gameSqs) {
                 if(lives > 0) {
                     livesPopUp.innerHTML = '-1 life';
                     livesPopUp.style.color = 'red';
-                    livesPopUp.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                    livesPopUp.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
                     let livesPopSplit = SplitText.create("#lives-status-popup", {
                         type:"chars, words, lines", 
                         mask: "chars"});
@@ -410,14 +408,17 @@ function playSqaures(gameSqs) {
                     resetBtn.classList.toggle('disabledbutton');
                     disableSquares = true;
                     gameOver = true;
-                    document.querySelector('h2').innerHTML = 'Game over!';
-                    randomSqaure.style.border = 'orange 3px solid';
+                    // document.querySelector('h2').innerHTML = 'Game over!';
+
+                    gameStatusPopUp.innerHTML = 'GAME OVER!';
+                    let gSPopSplit = SplitText.create("#popupBig", {
+                        type:"chars, words, lines", 
+                        mask: "chars"});
+                    gameStatusPopUp.style.display = 'block';
+                    textAnimation(gSPopSplit, "from", "fast", "chars");
+                    randomSqaure.style.border = 'orange 4px solid';
                     // resetBtn.style.display = 'block';
                 }
-                
-
-
-                
             }
         });
     });
@@ -430,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function (){
     livesNumber.style.display = 'none';
     resetBtn.style.display = 'none';
     // nextLvlBtn.style.display = 'none';
-    roundsText.style.display = 'none';
+    // roundsText.style.display = 'none';
     mainHeading.style.display = 'none';
     mainGame.style.display = 'none';
     livesPopUp.style.display = 'none';
@@ -456,39 +457,21 @@ startBtn.addEventListener('click', function (){
         resetBtn.disabled = true;
         livesTitle.style.display = 'inline-block';
         livesNumber.style.display = 'inline-block';
-        roundsText.style.display = 'block';
-        roundsNumber.innerHTML = `${currentLevel}`;
+        // roundsText.style.display = 'block';
+        // roundsNumber.innerHTML = `${currentLevel}`;
 
         game(currentLevel, gameData[currentLevel]['size']);
         
         grid.classList.add('')
         console.log(colourSqs);
     }, 1250)
-
-    
-
 });
-
-
-// nextLvlBtn.addEventListener('click', () => {
-//     nextLvlBtn.style.display = 'none'; 
-//     currentLevel++;
-//     roundsNumber.innerHTML = `${currentLevel}`;
-//     //reset for next level
-//     const gridItems = document.querySelectorAll('.grid-item');
-//     gridItems.forEach(e => e.remove());
-//     document.querySelector('h2').innerHTML = '';
-//     disableSquares = false;
-
-//     game(currentLevel, gameData[currentLevel]['size']);
-//     console.log(currentLevel);
-// });
 
 
 function playNextLevel() {
     // nextLvlBtn.style.display = 'none'; 
     currentLevel++;
-    roundsNumber.innerHTML = `${currentLevel}`;
+    // roundsNumber.innerHTML = `${currentLevel}`;
 
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(e => e.remove());
@@ -511,8 +494,8 @@ resetBtn.addEventListener('click', () => {
     disableSquares = false;
     // resetBtn.disabled = true;
     resetBtn.classList.toggle('disabledbutton');
-
-    roundsNumber.innerHTML = `${currentLevel}`;
+    gameStatusPopUp.style.display = 'none';
+    // roundsNumber.innerHTML = `${currentLevel}`;
 
     game(currentLevel, gameData[currentLevel]['size']);
 });

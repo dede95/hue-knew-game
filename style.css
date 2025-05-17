@@ -9,6 +9,10 @@ body {
     overflow-y:hidden;
 }
 
+p {
+    font-size: 1rem;
+}
+
 .container-fluid, .game-area {
     padding-right: 0;
 }
@@ -84,15 +88,38 @@ body {
 }
 
 .heading {
-    height: 50vh;
+    height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
 
 .heading h1 {
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
+    text-align: center;
+
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2rem;
+}
+
+.lives-and-rounds {
+    font-family: "Space Grotesk", sans-serif;
+    text-align: center;
+    /* display: flex;
+    justify-content: center; */
+}
+
+.lives-and-rounds p {
+    font-size: 2rem;
+    font-weight: 200;
+}
+
+.lives-and-rounds span {
+    font-weight: 700;
+    font-size: 2.5rem;
 }
 
 .game-status {
@@ -102,6 +129,7 @@ body {
 .buttons {
     height: 10vh;
     display: flex;
+    justify-content: center;
 }
 
 #startGame,
@@ -127,7 +155,9 @@ body {
 
 #resetGame {
     background-color: rgb(250, 97, 51);
-    border: 2px solid rgb(248, 81, 25);
+    border: 1px solid rgb(248, 81, 25);
+    font-family: "Space Grotesk", sans-serif;
+    text-transform: uppercase;
 }
 
 #nextLevel {
@@ -167,15 +197,15 @@ body {
     transform: scale(1);
 }
 
-.grid-item:hover {
+.grid-item.hoverable:hover {
     cursor: pointer;
-    transform: scale(0.98);
+    transform: scale(0.97);
 }
 
 #lives-status-popup {
     position: absolute;
-    top: 50vh;
-    left:70vw;
+    top: 47vh;
+    left:68vw;
     font-family: "Press Start 2P", system-ui;
     font-weight: 400;
     font-style: normal;
@@ -192,9 +222,8 @@ body {
     font-style: normal;
     font-size: 1.8rem;
     transform-origin: center;
+    color: white;
 }
-
-
 
 @media (max-width: 991.98px) {
     .game-play {
@@ -221,22 +250,35 @@ body {
         height: auto;
     }
 
+    .heading h1 {
+        margin-top: 16px;
+        padding: 8px;
+    }
+
     .lives-and-rounds {
         display: flex;
     }
 
+    .lives-and-rounds p {
+    font-size: 1.5rem;
+    font-weight: 200;
+}
+
+    .lives-and-rounds span {
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
     #lives-status-popup {
         position: absolute;
-        top: 65vh;
-        left:50vw;
-        
+        top: 57vh;
+        left:44vw;  
     }  
 
     #popupBig {
         position: absolute;
         top: 55vh;
-        left:35vw;
-        
+        left:35vw; 
     }   
 
     #resetGame, #nextLevel {
@@ -286,4 +328,16 @@ body {
         aspect-ratio: 1 / 1;
         margin: 0;
     }
+
+    #lives-status-popup {
+        position: absolute;
+        top: 63vh;
+        left:40vw;  
+    }  
+
+    #popupBig {
+        position: absolute;
+        top: 62vh;
+        left:28vw; 
+    } 
 }
