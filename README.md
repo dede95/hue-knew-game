@@ -1,7 +1,7 @@
 # Hue Knew? - an odd-one-out game
 "Hue Knew?" is a odd-one-out game where the player has to choose the sqaure in a grid that has a different colour (hue) to the rest of the sqaures. 
 
-Play the game here: https://dede95.github.io/colour-palette-challenge/
+Play the game here: https://dede95.github.io/hue-knew-game/
 
 ## Technologies 
 - HTML 
