@@ -73,10 +73,6 @@ p {
 
 }
 
-/* body {
-    background-color: rgb(255, 242, 217);
-} */
-
 .game-play h1 {
     font-size: 3rem;
 }
@@ -130,6 +126,8 @@ p {
     height: 10vh;
     display: flex;
     justify-content: center;
+    font-family: "Space Grotesk", sans-serif;
+    text-transform: uppercase;
 }
 
 #startGame,
@@ -151,19 +149,14 @@ p {
 #startGame {
     background-color: rgb(250, 181, 51);
     border: 2px solid rgb(248, 170, 25);
+    font-size: 0.25em;
 }
 
 #resetGame {
     background-color: rgb(250, 97, 51);
     border: 1px solid rgb(248, 81, 25);
-    font-family: "Space Grotesk", sans-serif;
-    text-transform: uppercase;
 }
 
-#nextLevel {
-    background-color: rgb(177, 250, 51);
-    border: 2px solid rgb(151, 248, 25);
-}
 
 #startGame:hover {
     background-color: rgb(229, 165, 45);
@@ -171,10 +164,6 @@ p {
 
 #resetGame:hover {
     background-color: rgb(232, 90, 46);
-}
-
-#nextLevel:hover {
-    background-color: rgb(163, 231, 47);
 }
 
 #grid {
