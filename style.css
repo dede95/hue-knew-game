@@ -294,6 +294,7 @@ p {
 
     #grid {
         width: min(85vw, 85vh);
+        height: auto;
     }
 
     #smallScreen {
@@ -301,16 +302,15 @@ p {
         flex-direction: column;
     }
 
-
 }
 
 @media (max-width: 575.98px) {
 
     #grid {
-        display: grid; /* Revert to grid layout */
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Adjust as needed */
-        gap: 3px;
+        display: grid; 
+        /* grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));  */
         width: min(100vw, 100vh);
+
     }
 
     .grid-item {
