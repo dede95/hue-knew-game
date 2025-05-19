@@ -257,12 +257,13 @@ p {
 
     .lives-and-rounds {
         display: flex;
+        gap: 32px;
     }
 
     .lives-and-rounds p {
     font-size: 1.5rem;
     font-weight: 200;
-}
+    }
 
     .lives-and-rounds span {
         font-weight: 700;

@@ -82,7 +82,7 @@ const textAnimation = (item, toOrFrom, speed, granularity) => {
                 y: 100,
                 autoAlpha:0, 
                 stagger: {
-                    amount: 0.8
+                    amount: 0.6
                 }
             });
         } else if (speed === "fast"){
@@ -144,7 +144,6 @@ let roundsNumber = document.querySelector('#rounds span');
 
 const startBtn = document.querySelector('#startGame');
 const resetBtn = document.querySelector('#resetGame');
-// const nextLvlBtn = document.querySelector('#nextLevel');
 
 resetBtn.classList.add('disabledbutton');
 
@@ -232,17 +231,25 @@ const generateGrid = (size) => {
 
     // game level pop up animation
     if (currentLevel % 5 === 0){
-        gameStatusPopUp.innerHTML = `Level ${currentLevel} <br> <p>you gained a life!</p>`;
-    } else {
-        gameStatusPopUp.innerHTML = `Level ${currentLevel}`;
-    }
+        lives++;
+        gameStatusPopUp.innerHTML = `Checkpoint: <br> Level ${currentLevel} <br> <p>you gained a life!</p>`;
 
-    let gSPopSplit = SplitText.create("#popupBig", {
-        type:"chars, words, lines", 
-        mask: "chars"});
-    gameStatusPopUp.style.display = 'block';
-    textAnimation(gSPopSplit, "from", "fast", "chars");
-    
+        let gSPopSplit = SplitText.create("#popupBig", {
+            type:"chars, words, lines", 
+            mask: "chars"});
+        gameStatusPopUp.style.display = 'block';
+        textAnimation(gSPopSplit, "from", "fast", "chars");
+
+        gameStatusPopUp.style.display = 'block'
+        setTimeout(() => {
+            textAnimation(gSPopSplit, "to", "fast", "chars");
+            setTimeout(() => {
+                gameStatusPopUp.style.display = 'none';
+                gameStatusPopUp.innerHTML = '';
+            }, 400);
+        }, 1500)
+    } 
+
     // generate and show grid
     for(let i = 0; i < sqaures; i++){
         let sqaure = document.createElement('div');
@@ -260,15 +267,6 @@ const generateGrid = (size) => {
         }
         
     }
-
-    // remove game level pop up animation
-    setTimeout(() => {
-        textAnimation(gSPopSplit, "to", "fast", "chars");
-        setTimeout(() => {
-            gameStatusPopUp.style.display = 'none';
-            gameStatusPopUp.innerHTML = '';
-        }, 400);
-    }, 1500)
     
     return gridSize
 }
@@ -328,12 +326,17 @@ function game(level, size) {
 
     // add starting lives to view
     livesNumber.innerHTML = `${lives}`;
-    //delay play until animations in generateGrid has finished
-    setTimeout(() => {
-        playSqaures(colourSqs);
-        //activating hover once animation is done
+
+    playSqaures(colourSqs);
+            //activating hover once animation is done
+    if (currentLevel % 5 === 0){
+        setTimeout(() => {
+            colourSqs.forEach(e => e.classList.add('hoverable'));
+        }, 1800)
+    } else {
         colourSqs.forEach(e => e.classList.add('hoverable'));
-    }, 2000);
+    }
+    
     
 }
 
@@ -369,16 +372,15 @@ function playSqaures(gameSqs) {
                 
 
                 //complete delayed "Correct" animation + play the next level 0.4s after animation finishes
+                
                 setTimeout(() => {
-                    textAnimation(gSPopSplit, "to", "norm", "chars");
                     setTimeout(() => {
+                        textAnimation(gSPopSplit, "to", "norm", "chars");
                         gameStatusPopUp.style.display = 'none';
                         gameStatusPopUp.innerHTML = '';
                         playNextLevel();
                     }, 400);
-                }, 1500)
-                
-                // resetBtn.disabled = true;
+                }, 1500);
 
 
             } else {
@@ -430,8 +432,7 @@ document.addEventListener('DOMContentLoaded', function (){
     livesTitle.style.display = 'none';
     livesNumber.style.display = 'none';
     resetBtn.style.display = 'none';
-    // nextLvlBtn.style.display = 'none';
-    // roundsText.style.display = 'none';
+    roundsText.style.display = 'none';
     mainHeading.style.display = 'none';
     mainGame.style.display = 'none';
     livesPopUp.style.display = 'none';
@@ -457,8 +458,8 @@ startBtn.addEventListener('click', function (){
         resetBtn.disabled = true;
         livesTitle.style.display = 'inline-block';
         livesNumber.style.display = 'inline-block';
-        // roundsText.style.display = 'block';
-        // roundsNumber.innerHTML = `${currentLevel}`;
+        roundsText.style.display = 'block';
+        roundsNumber.innerHTML = `${currentLevel}`;
 
         game(currentLevel, gameData[currentLevel]['size']);
         
@@ -469,9 +470,8 @@ startBtn.addEventListener('click', function (){
 
 
 function playNextLevel() {
-    // nextLvlBtn.style.display = 'none'; 
     currentLevel++;
-    // roundsNumber.innerHTML = `${currentLevel}`;
+    roundsNumber.innerHTML = `${currentLevel}`;
 
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(e => e.remove());
@@ -483,7 +483,6 @@ function playNextLevel() {
 }
 
 resetBtn.addEventListener('click', () => {
-    // resetBtn.style.display = 'none';
     currentLevel = 1;
     lives = 3;
 
@@ -492,10 +491,9 @@ resetBtn.addEventListener('click', () => {
     gridItems.forEach(e => e.remove());
     document.querySelector('h2').innerHTML = '';
     disableSquares = false;
-    // resetBtn.disabled = true;
     resetBtn.classList.toggle('disabledbutton');
     gameStatusPopUp.style.display = 'none';
-    // roundsNumber.innerHTML = `${currentLevel}`;
+    roundsNumber.innerHTML = `${currentLevel}`;
 
     game(currentLevel, gameData[currentLevel]['size']);
 });
