@@ -169,6 +169,15 @@ p {
     background-color: rgb(232, 90, 46);
 }
 
+
+.game-status h2 {
+        font-size: 1.8rem;
+}
+
+.game-status p {
+        font-size: 1.3rem;
+}
+
 #grid {
     display: grid;
     width: min(100vw, 100vh);
@@ -280,6 +289,14 @@ p {
         justify-self: flex-end;
     }
 
+    .game-status h2 {
+        font-size: 1.6rem;
+}
+
+    .game-status p {
+            font-size: 1.2rem;
+    }
+
     .game-area {
         height: 80vh; 
         padding-left: 0 !important;
@@ -330,6 +347,14 @@ p {
 
     .lives-and-rounds span {
         font-size: 1.5rem;
+    }
+
+    .game-status h2 {
+        font-size: 1.2rem;
+    }
+
+    .game-status p {
+        font-size: 1rem;
     }
 
     #resetGame {

@@ -237,7 +237,7 @@ const generateGrid = (size) => {
     if (currentLevel % 5 === 0){
         if (currentLevel != 40){
             lives++;
-            gameStatusPopUp.innerHTML = `Checkpoint: <br> Level ${currentLevel} <br> <p>you gained a life!</p>`;
+            gameStatusPopUp.innerHTML = `<h2>Checkpoint: <br> Level ${currentLevel}</h2> <br> <p>you gained a life!</p>`;
         } else {
             gameStatusPopUp.innerHTML = `Final level`;
         }
@@ -371,7 +371,7 @@ function playSqaures(gameSqs) {
                 disableSquares = true;
                 randomSqaure.style.border = 'orange 4px solid';
 
-                gameStatusPopUp.innerHTML = 'Correct!';
+                gameStatusPopUp.innerHTML = '<h2>Correct!</h2>';
                 let gSPopSplit = SplitText.create("#popupBig", {
                     type:"chars, words, lines", 
                     mask: "chars"});
@@ -420,7 +420,7 @@ function playSqaures(gameSqs) {
                     gameOver = true;
                     // document.querySelector('h2').innerHTML = 'Game over!';
 
-                    gameStatusPopUp.innerHTML = 'GAME OVER!';
+                    gameStatusPopUp.innerHTML = '<h2>GAME OVER!</h2>';
                     let gSPopSplit = SplitText.create("#popupBig", {
                         type:"chars, words, lines", 
                         mask: "chars"});
