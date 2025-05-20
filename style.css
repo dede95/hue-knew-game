@@ -138,6 +138,9 @@ p {
     color: rgb(49, 47, 42);
     font-weight: 600;
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
 }
 
 .disabledbutton {
@@ -307,6 +310,10 @@ p {
 
 @media (max-width: 575.98px) {
 
+    _::-webkit-full-page-media, _:future, :root .safari_only {
+        padding-bottom: 65px;
+    }
+
     .heading h1 {
         /* justify-content: center;
         align-items: center; */
@@ -324,8 +331,9 @@ p {
     }
 
     #resetGame {
-    font-size: 0.7em;
-}
+        font-size: 0.7em;
+        vertical-align: middle;
+    }
 
     #grid {
         display: grid; 
