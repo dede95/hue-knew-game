@@ -38,10 +38,7 @@ function drawCircles(circle){
     ctx.closePath();
 }
 
-function animate(){
-    requestAnimationFrame(animate);
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-
+function setCircles() {
     circles.forEach(circle => {
         if (circle.x + circle.radius > canvas.width || circle.x - circle.radius <0) {
             circle.dx = -circle.dx;
@@ -53,6 +50,13 @@ function animate(){
         circle.y += circle.dy;
         drawCircles(circle);
     });
+}
+
+function animate(){
+    requestAnimationFrame(animate);
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
+    setCircles();
 }
 
 function resizeCanvas(){
@@ -231,8 +235,12 @@ const generateGrid = (size) => {
 
     // game level pop up animation
     if (currentLevel % 5 === 0){
-        lives++;
-        gameStatusPopUp.innerHTML = `Checkpoint: <br> Level ${currentLevel} <br> <p>you gained a life!</p>`;
+        if (currentLevel != 40){
+            lives++;
+            gameStatusPopUp.innerHTML = `Checkpoint: <br> Level ${currentLevel} <br> <p>you gained a life!</p>`;
+        } else {
+            gameStatusPopUp.innerHTML = `Final level`;
+        }
 
         let gSPopSplit = SplitText.create("#popupBig", {
             type:"chars, words, lines", 
@@ -247,7 +255,7 @@ const generateGrid = (size) => {
                 gameStatusPopUp.style.display = 'none';
                 gameStatusPopUp.innerHTML = '';
             }, 400);
-        }, 1500)
+        }, 1500);
     } 
 
     // generate and show grid
